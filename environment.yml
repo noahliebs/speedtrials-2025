@@ -1,0 +1,29 @@
+name: georgia-water
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  - pandas>=2.0.0
+  - jinja2>=3.1.0
+  - python-dotenv>=1.0.0
+  - tenacity>=8.2.0
+  - pip:
+    # Core framework
+    - streamlit>=1.28.0
+    
+    # Database  
+    - sqlalchemy>=2.0.0
+    - psycopg2-binary>=2.9.0
+    
+    # LLM and AI
+    - google-genai>=1.23.0
+    - google-api-core
+    
+    # Async support
+    - asyncio-extras>=1.3.0
+    - nest_asyncio
+
+    # Debugging locally.
+    - ipython

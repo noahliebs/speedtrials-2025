@@ -1,0 +1,75 @@
+line-length = 88
+target-version = "py312"
+
+[lint]
+# Enable all rules by default, then selectively disable
+select = [
+    "F",    # pyflakes
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "C90",  # mccabe complexity
+    "I",    # isort
+    "N",    # pep8-naming
+    "D",    # pydocstyle
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "A",    # flake8-builtins
+    "C4",   # flake8-comprehensions
+    "PIE",  # flake8-pie
+    "PL",   # pylint
+    "RUF",  # ruff-specific rules
+]
+
+# Ignore specific rules that might be too strict
+ignore = [
+    # Things we don't think are always bad.
+    "C405",     # Unnecessary list literal
+    "D105",     # Missing docstring in magic method
+    "D107",     # Missing docstring in __init__; these seems not useful
+    "D417",     # Missing argument description in the docstring
+    "PLR2004",  # Magic values used in comparison, used in checking CL arg lengths
+    "PLW0603",  # Using globals, actually useful in GCF for metrics etc
+
+    # Things that make sense to enable after fixing.
+    "D101",     # Missing docstring in public class
+    "D102",     # Missing docstring in public method
+    "D103",     # Missing docstring in public function
+    "D202",     # Multi-line doscstring summary should start at the first line
+    "D205",     # Blank line between summary and description
+    "D209",     # Multi-line docstrings should have closing quotes on separate line
+    "D200",     # One-line docstring should fit on one line
+    "D212",     # Multi-line docstring summary should start at the first line
+    "D301",     # Docstrings with backslashes should have an "r" prefix
+    "D415",     # First line should end with a period, question mark or exclamation point
+    "D417",     # Missing argument description
+    "E741",     # Ambiguous variable names, such as "l" because it looks like a "I", etc
+    "N818",     # Exception name should end in Error
+    "PLR0911",  # Too many return statements
+    "RUF010",   # Use explicit conversion flag
+    "RUF012",   # Annotate mutable class attributes
+]
+
+# Allow auto-fixing
+fixable = ["ALL"]  # Can also specify exact rules: ["E", "F", "I", "W"]
+unfixable = []     # Rules that should never be auto-fixed
+
+[lint.isort]
+force-single-line=true
+
+[lint.pylint]
+max-args = 20  # 5 is the default.
+max-statements = 80  # 50 is the default, we should reduce to this.
+
+[lint.pydocstyle]
+convention = "google"  # Use Google-style docstrings
+
+[lint.flake8-quotes]
+docstring-quotes = "double"
+inline-quotes = "single"
+
+[lint.pep8-naming]
+classmethod-decorators = ["classmethod", "validator", "root_validator"]
+
+[lint.per-file-ignores]
+"*_test.py" = ["D", "N802", "PLR0913"]
+"__init__.py" = ["D104", "F401"]

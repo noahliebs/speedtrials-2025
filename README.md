@@ -1,79 +1,136 @@
-# 🏁 Codegen Speed Trials - Challenge Repo 
+# 💧 Georgia Water Quality System
 
-**🚰 What's in our public drinking water? Turn Georgia's cryptic water quality data into something the public, operators, and regulators can actually use.**
+**A modern, AI-powered water quality information system that transforms Georgia's cryptic drinking water data into actionable insights for the public, operators, and regulators.**
 
-American's [top environmental concern](https://news.gallup.com/poll/643850/seven-key-gallup-findings-environment-earth-day.aspx) is pollution in their drinking water. The EPA publishes [national drinking water data](https://www.epa.gov/ground-water-and-drinking-water/safe-drinking-water-information-system-sdwis-federal-reporting), but it's difficult to interpret, especially for the public or under-resourced rural water systems.
+## 🚀 What We Built
 
-To give you a feel for existing solutions, here's the state of Georgia's official drinker water viewer:
+We've transformed Georgia's outdated water quality viewer into a modern, conversational interface that makes water safety data accessible to everyone. Our solution ingests raw SDWIS (Safe Drinking Water Information System) data and provides multiple ways to explore and understand water quality across Georgia.
 
-<img width="900" alt="Screenshot 2025-06-27 at 8 30 45 PM" src="https://github.com/user-attachments/assets/d8f7c9e9-a146-4a8f-b6c7-fed8d634ca2c" />
+### Key Features
 
+#### 🤖 AI-Powered Chat Interface
+- Natural language queries about water systems, violations, and safety
+- Intelligent SQL generation with automatic retry on errors
+- Context-aware responses that explain technical terms in plain language
+- Real-time data retrieval from the SDWIS database
 
-**✨ The good news:** the Georgia Environmental Protection Division knows the public deserves better! Three weeks ago, they published a [Request for Information](https://drive.google.com/file/d/13VkRTJhGJcF9FmgrXs-j4PZzI3jepFvq/view?usp=sharing) to overhaul the whole thing.
+#### 🔍 Advanced Search System
+- Multi-criteria search for water systems by:
+  - System ID, name, county, or city
+  - Water system type (Community, Transient, Non-Transient)
+  - Source water type (Groundwater, Surface Water, Mixed)
+  - Contact type and sample classifications
+- Direct SQL queries with fallback to AI assistance
+- Results displayed in user-friendly cards with violation status
 
-**✅ Your task:** Set the water data free. Build a product that ingests real-world raw water quality data and empowers the public and water systems operators to interpret and act on it.
+#### 📊 Interactive Dashboards
+- **Statistics View**: Real-time metrics on Georgia's water systems
+  - Total systems and population served
+  - Health violations and unresolved issues
+  - System type breakdowns with explanations
+- **CCR Reports**: Consumer Confidence Report generation
+- **Schedule Lookup**: Monitoring schedules and sampling requirements
 
-## 🗂️ What We're Giving You
+#### 👥 Multi-Stakeholder Design
+1. **For the Public**: 
+   - Plain-language explanations of violations and health implications
+   - Easy search by city or county
+   - Visual indicators for system safety status
 
-In the [data](data/) directory, you'll find a raw export of the public Georgia water system data from SDWIS along with a README packed with helpful context and links. Feel free to augment! 
+2. **For Operators**:
+   - System-specific violation tracking
+   - Monitoring schedule lookups
+   - Compliance status overview
 
-The Georgia RFP wants solutions for three primary stakeholders:
+3. **For Regulators**:
+   - Comprehensive violation summaries
+   - Site visit histories
+   - Quick access to system details
 
-1. **The Public:** Make it easier for Georgia residents to understand the safety of their drinking water. You could help them better understand what violations mean, the health implications of different contaminants, or take action to stay up-to-date on their local water system. 
-2. **The Operators:** Help water system operators view information on their system, track notices from regulators, and take action on compliance tasks. 
-3. **The Regulators:** A field kit allowing them to quickly understand the live status of a water system on-the-go on site visits or in meetings. They'll need to drill down into specifics, but high level summaries are helpful too! 
+## 🛠️ Technical Implementation
 
-## Getting Started
+### Architecture
+- **Frontend**: Streamlit with custom CSS for modern UI
+- **Backend**: Python 3.12 with async support
+- **Database**: PostgreSQL with optimized SDWIS schema
+- **AI**: Google Gemini 1.5 Flash with tool calling for SQL generation
+- **ETL**: Custom data pipeline handling Georgia's Q1 2025 data
 
-1. **Fork**
-   - Fork this repository, you'll include a link to your fork in your submission.
-3. **Explore:**
-   - Look through the [data directory](data/) to understand structure and patterns.
-   - Ingest the raw data into a clean, queryable database.
-   - Feel free to augment with any additional data you need (e.g. geographic data for mapping)
-4. **Create:**
-   - Take [Georgia's current offering](https://gadrinkingwater.net/DWWPUB/) out of the 2000s.
-   - You can build for the Public, the Operators, the Regulators (or all three!).
-1. **Submit:** Instructions below.
+### Data Processing
+- Cleaned and ingested 15+ SDWIS data tables
+- Handled data quality issues (missing IDs, filler characters, formatting)
+- Created optimized indexes for fast queries
+- Built comprehensive foreign key relationships
 
-## Implementation Requirements
+### Key Components
+- `app.py`: Main Streamlit application with view management
+- `backend/api_manager.py`: API orchestration with caching
+- `backend/chat_manager.py`: LLM integration with SQL retry logic
+- `backend/sql_manager.py`: Database operations with query validation
+- `ui_components.py`: Reusable UI components
+- `search_handlers.py`: Search logic and parameter validation
 
-- **Don't sweat hosting:** You can build the whole thing locally and share a live link via [ngrok tunnel](https://ngrok.com/our-product/secure-tunnels) (or similar) to your localhost:
+## 🚦 Getting Started
 
-   ```shell
-   brew install ngrok
-   # If you don't have one, sign up for a free ngrok account at https://ngrok.com
-   ngrok config add-authtoken <your-ngrok-auth-token>
-   ngrok http http://localhost:<your-local-server-port>
-   ```
-- **BYO stack:** As long as you follow the submission instructions, you can take any approach you want — any libraries, any DB, any interface. We will be rewarding bold swings!  
+### Prerequisites
+- PostgreSQL
+- Python 3.12
+- Conda (recommended) or pip
 
+### Quick Setup
 
-## ⚖️ Judging
+1. **Clone and setup environment**
+```bash
+# Using conda (recommended)
+conda env create -f environment.yml
+conda activate georgia-water
+```
 
-Unlike traditional hackathons, the Codegen Speed Trials aren't just about what you build, they're about how you build it. We'll reward participants who take the challenge the furthest, but we're equally excited to celebrate innovative collaborations with AI.
+2. **Load the data**
+```bash
+# Create database
+psql -c "CREATE DATABASE sdwis_georgia;"
 
-​Projects will be scored across four categories:
+# Run ETL pipeline
+cd etl
+chmod +x data_load.sh
+./data_load.sh
+```
 
-1. **Core Delivery:** Does your submission preserve and accurately represent the data provided?
-2. **Impact and Relevance:** Does your submission improve on [Georgia's exising solution](https://gadrinkingwater.net/DWWPUB/) for the public, water system operators, regulators (or multiple)?
-3. **Ambition and Scope:** Did you take a big, creative swing at the problem? How far beyond the baseline did you dare to go?
-4. **Iron Man Score:** Did you make creative use of AI tools and agents to get the challenge done?
+3. **Run the application**
+```bash
+streamlit run app.py
+```
 
-We have $1000s in cash and credit prizes to award for winning submissions, and are excited to see what you build!
+4. **Access via browser**
+- Local: http://localhost:8501
+- Can use ngrok for remote access
 
-## 📤 Submission Instructions
+## 🎯 How It Works
 
-**Submissions are due by 5 PM. [Use this link to submit.](https://cerebralvalley.ai/e/codegen-speedtrials-2025/hackathon/submit)**
+### Chat Mode
+Ask natural questions like:
+- "What water systems serve Atlanta?"
+- "Show me all lead violations in Fulton County"
+- "Which systems have the most health violations?"
 
-Include the following with your submission:
+The AI understands context and will:
+- Generate appropriate SQL queries
+- Retry with corrections if queries fail
+- Explain results in plain language
+- Highlight safety concerns
 
-1. A public link to your forked Github repo
-2. 3. A link to a short (< 2 min) video explaining your submission and the tools + approaches you used to build it. We want to hear details on how you accelerated your work using AI!
-3. A link via [ngrok tunnel](https://ngrok.com/our-product/secure-tunnels) (or similar) to your localhost:
+### Search Mode
+Use the enhanced search interface to:
+- Filter by multiple criteria simultaneously
+- See results instantly with safety indicators
+- Fall back to AI assistance for complex queries
 
-   **Important:** your tunnel will need to remain accessible throughout the entire judging period, which runs from 5-7P PT.
+### Developer Mode
+Toggle developer mode to see:
+- Generated SQL queries
+- Raw query results
+- LLM conversation flow
+- Database performance metrics
 
----
-
-Good luck!
+Built for the Codegen Speed Trials 2025
